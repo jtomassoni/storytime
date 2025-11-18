@@ -86,7 +86,7 @@ export default function PreferencesPage() {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      const ageRange = answers.age ? answers.age.split("-") : null
+      const ageRange = answers.age && typeof answers.age === 'string' ? answers.age.split("-") : null
       const res = await fetch("/api/preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

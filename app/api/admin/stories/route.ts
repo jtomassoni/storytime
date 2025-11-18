@@ -50,7 +50,6 @@ export async function POST(request: Request) {
       data: {
         title,
         shortDescription,
-        longDescription: longDescription || null,
         fullText,
         boyStoryText: boyStoryText || null,
         girlStoryText: girlStoryText || null,
@@ -60,15 +59,6 @@ export async function POST(request: Request) {
         isActive: isActive ?? true,
         valuesTags: valuesTags || [],
         topicTags: topicTags || [],
-        cultureTags: cultureTags || [],
-        languageTags: languageTags || [],
-        contentWarnings: contentWarnings || [],
-        representationTags: representationTags || [],
-        categories: {
-          create: (selectedCategoryIds || []).map((categoryId: string) => ({
-            categoryId,
-          })),
-        },
       },
     })
 

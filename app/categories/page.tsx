@@ -20,37 +20,8 @@ type CategoryWithCount = {
 
 export default async function CategoriesPage() {
   const user = await getCurrentUser()
-  let categories: CategoryWithCount[] = []
-  
-  try {
-    categories = await prisma.category.findMany({
-      where: {
-        stories: {
-          some: {
-            story: {
-              isActive: true,
-            },
-          },
-        },
-      },
-      orderBy: { name: "asc" },
-      include: {
-        _count: {
-          select: {
-            stories: {
-              where: {
-                story: {
-                  isActive: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    })
-  } catch (error) {
-    console.error("Database error loading categories:", error)
-  }
+  // Category model doesn't exist in schema - return empty array
+  const categories: CategoryWithCount[] = []
 
   return (
     <Layout>

@@ -11,13 +11,6 @@ export default async function EditStoryPage({
 }) {
   const story = await prisma.story.findUnique({
     where: { id: params.id },
-    include: {
-      categories: {
-        include: {
-          category: true,
-        },
-      },
-    },
   })
 
   if (!story) {

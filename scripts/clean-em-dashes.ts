@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
  * This makes the text look more natural and less AI-generated
  */
 function cleanEmDashes(text: string | null | undefined): string | null {
-  if (!text) return text
+  if (!text) return null
   // Replace em dash (—) with regular dash with spaces
   return text.replace(/—/g, ' - ')
 }

@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Layout } from "@/components/Layout"
 import { FaTimes, FaCheck } from "react-icons/fa"
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get("token")
@@ -165,6 +165,14 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </Layout>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<Layout><div className="min-h-screen flex items-center justify-center p-4"><div className="text-lg">Loading...</div></div></Layout>}>
+      <ResetPasswordContent />
+    </Suspense>
   )
 }
 

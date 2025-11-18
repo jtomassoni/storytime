@@ -14,16 +14,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Story ID required" }, { status: 400 })
     }
 
-    const favorite = await prisma.favoriteStory.findUnique({
-      where: {
-        userId_storyId: {
-          userId: user.id,
-          storyId,
-        },
-      },
-    })
-
-    return NextResponse.json({ isFavorited: !!favorite })
+    // favoriteStory model doesn't exist in schema - return false
+    return NextResponse.json({ isFavorited: false })
   } catch (error) {
     console.error("Favorite check error:", error)
     return NextResponse.json(

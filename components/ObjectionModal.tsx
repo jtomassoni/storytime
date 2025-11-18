@@ -1,8 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { StoryObjectionReason } from "@prisma/client"
 import { useAlertModal } from "./AlertModal"
+
+type StoryObjectionReason = 
+  | "TOO_SCARY"
+  | "NOT_AGE_APPROPRIATE"
+  | "CULTURAL_MISMATCH"
+  | "LANGUAGE_ISSUE"
+  | "OTHER"
 
 type ObjectionModalProps = {
   storyId: string

@@ -3,9 +3,15 @@ import { headers } from "next/headers"
 import Stripe from "stripe"
 import { prisma } from "@/lib/prisma"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-10-29.clover",
-})
+function getStripe() {
+  const secretKey = process.env.STRIPE_SECRET_KEY
+  if (!secretKey) {
+    throw new Error("STRIPE_SECRET_KEY is not configured")
+  }
+  return new Stripe(secretKey, {
+    apiVersion: "2025-10-29.clover",
+  })
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -21,6 +27,7 @@ export async function POST(request: Request) {
   let event: Stripe.Event
 
   try {
+    const stripe = getStripe()
     event = stripe.webhooks.constructEvent(
       body,
       signature,
@@ -32,6 +39,7 @@ export async function POST(request: Request) {
   }
 
   try {
+    const stripe = getStripe()
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
@@ -47,7 +55,7 @@ export async function POST(request: Request) {
               session.subscription as string
             )
             subscriptionEndsAt = new Date(
-              subscription.current_period_end * 1000
+              (subscription as any).current_period_end * 1000
             )
           } else if (plan === "founders") {
             // Founders plan: one-time payment, set to 100 years from now (lifetime)

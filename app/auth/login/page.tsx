@@ -1,10 +1,11 @@
 "use client"
 
+import { Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AuthModal } from "@/components/AuthModal"
 import { Layout } from "@/components/Layout"
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || undefined
@@ -27,6 +28,14 @@ export default function LoginPage() {
         />
       </div>
     </Layout>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<Layout><div className="min-h-screen flex items-center justify-center"><div className="text-lg">Loading...</div></div></Layout>}>
+      <LoginContent />
+    </Suspense>
   )
 }
 

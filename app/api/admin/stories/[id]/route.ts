@@ -33,17 +33,13 @@ export async function PUT(
       representationTags,
     } = body
 
-    // Delete existing category associations
-    await prisma.storyCategory.deleteMany({
-      where: { storyId: params.id },
-    })
+    // Category model doesn't exist - skip category associations
 
     const story = await prisma.story.update({
       where: { id: params.id },
       data: {
         title,
         shortDescription,
-        longDescription: longDescription || null,
         fullText,
         boyStoryText: boyStoryText || null,
         girlStoryText: girlStoryText || null,
@@ -53,15 +49,6 @@ export async function PUT(
         isActive: isActive ?? true,
         valuesTags: valuesTags || [],
         topicTags: topicTags || [],
-        cultureTags: cultureTags || [],
-        languageTags: languageTags || [],
-        contentWarnings: contentWarnings || [],
-        representationTags: representationTags || [],
-        categories: {
-          create: (selectedCategoryIds || []).map((categoryId: string) => ({
-            categoryId,
-          })),
-        },
       },
     })
 

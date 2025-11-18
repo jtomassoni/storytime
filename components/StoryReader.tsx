@@ -1,16 +1,24 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Story } from "@prisma/client"
 import { useSession } from "next-auth/react"
 import { FavoriteButton } from "./FavoriteButton"
 import { ObjectionModal } from "./ObjectionModal"
 import { useAlertModal } from "./AlertModal"
 
 type StoryReaderProps = {
-  story: Story & {
+  story: {
+    id: string
+    title: string
+    shortDescription: string
+    fullText: string
     boyStoryText?: string | null
     girlStoryText?: string | null
+    minAge?: number | null
+    maxAge?: number | null
+    estimatedReadTimeMinutes?: number | null
+    valuesTags: string[]
+    topicTags?: string[]
     fullText5Min?: string | null
     fullText10Min?: string | null
     boyStoryText5Min?: string | null

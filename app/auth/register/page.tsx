@@ -1,10 +1,11 @@
 "use client"
 
+import { Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AuthModal } from "@/components/AuthModal"
 import { Layout } from "@/components/Layout"
 
-export default function RegisterPage() {
+function RegisterContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const plan = searchParams.get("plan") || undefined
@@ -22,6 +23,14 @@ export default function RegisterPage() {
         />
       </div>
     </Layout>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<Layout><div className="min-h-screen flex items-center justify-center"><div className="text-lg">Loading...</div></div></Layout>}>
+      <RegisterContent />
+    </Suspense>
   )
 }
 

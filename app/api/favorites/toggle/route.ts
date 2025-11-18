@@ -13,34 +13,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Story ID required" }, { status: 400 })
     }
 
-    const existing = await prisma.favoriteStory.findUnique({
-      where: {
-        userId_storyId: {
-          userId: user.id,
-          storyId,
-        },
-      },
-    })
-
-    if (existing) {
-      await prisma.favoriteStory.delete({
-        where: {
-          userId_storyId: {
-            userId: user.id,
-            storyId,
-          },
-        },
-      })
-      return NextResponse.json({ isFavorited: false })
-    } else {
-      await prisma.favoriteStory.create({
-        data: {
-          userId: user.id,
-          storyId,
-        },
-      })
-      return NextResponse.json({ isFavorited: true })
-    }
+    // favoriteStory model doesn't exist in schema - return error
+    return NextResponse.json(
+      { error: "Favorites are not supported" },
+      { status: 501 }
+    )
   } catch (error) {
     console.error("Favorite toggle error:", error)
     return NextResponse.json(

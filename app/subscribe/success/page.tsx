@@ -1,13 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Layout } from "@/components/Layout"
 import Link from "next/link"
 import { FaCheckCircle, FaMoon, FaArrowRight } from "react-icons/fa"
 import { formatYearlyPrice } from "@/lib/formatPrice"
 
-export default function SubscribeSuccessPage() {
+function SubscribeSuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [loading, setLoading] = useState(true)
@@ -66,7 +66,7 @@ export default function SubscribeSuccessPage() {
                   <span className="text-xl font-semibold">{formatYearlyPrice()}/year</span>
                 </div>
                 <p className="text-sm text-gray-600">
-                  You'll receive a new bedtime story every day, personalized to your preferences.
+                  You&apos;ll receive a new bedtime story every day, personalized to your preferences.
                 </p>
               </div>
 
@@ -82,6 +82,14 @@ export default function SubscribeSuccessPage() {
         </div>
       </div>
     </Layout>
+  )
+}
+
+export default function SubscribeSuccessPage() {
+  return (
+    <Suspense fallback={<Layout><div className="min-h-[60vh] flex items-center justify-center py-12"><div className="text-lg">Loading...</div></div></Layout>}>
+      <SubscribeSuccessContent />
+    </Suspense>
   )
 }
 

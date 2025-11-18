@@ -5,7 +5,7 @@ import path from 'path'
  * Replaces em dashes (—) with regular dashes with spaces ( - )
  */
 function cleanEmDashes(text: string | null | undefined): string | null {
-  if (!text) return text
+  if (!text) return null
   return text.replace(/—/g, ' - ')
 }
 

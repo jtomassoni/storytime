@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server"
 import { requireAuth } from "@/lib/auth-helpers"
-import { prisma } from "@/lib/prisma"
-import { StoryObjectionReason } from "@prisma/client"
 
 export const dynamic = 'force-dynamic'
 
@@ -18,18 +16,11 @@ export async function POST(request: Request) {
       )
     }
 
-    await prisma.storyObjection.create({
-      data: {
-        userId: user.id,
-        storyId,
-        sentenceIndex: sentenceIndex !== undefined ? sentenceIndex : null,
-        textSpan: textSpan || null,
-        reason: reason as StoryObjectionReason,
-        comment: comment || null,
-      },
-    })
-
-    return NextResponse.json({ success: true })
+    // storyObjection model doesn't exist in schema - return error
+    return NextResponse.json(
+      { error: "Objections are not supported" },
+      { status: 501 }
+    )
   } catch (error) {
     console.error("Objection error:", error)
     return NextResponse.json(

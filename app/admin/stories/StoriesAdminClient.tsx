@@ -13,12 +13,12 @@ type Story = {
   createdAt: Date
   valuesTags: string[]
   topicTags: string[]
-  cultureTags: string[]
-  representationTags: string[]
+  cultureTags?: string[]
+  representationTags?: string[]
   estimatedReadTimeMinutes: number | null
   boyStoryText: string | null
   girlStoryText: string | null
-  categories: Array<{
+  categories?: Array<{
     category: {
       name: string
     }
@@ -41,7 +41,9 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
   const allCategories = useMemo(() => {
     const cats = new Set<string>()
     initialStories.forEach((story) => {
-      story.categories.forEach((sc) => cats.add(sc.category.name))
+      if (story.categories) {
+        story.categories.forEach((sc) => cats.add(sc.category.name))
+      }
     })
     return Array.from(cats).sort()
   }, [initialStories])
@@ -51,7 +53,9 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
     initialStories.forEach((story) => {
       story.valuesTags.forEach((tag) => tags.add(tag))
       story.topicTags.forEach((tag) => tags.add(tag))
-      story.cultureTags.forEach((tag) => tags.add(tag))
+      if (story.cultureTags) {
+        story.cultureTags.forEach((tag) => tags.add(tag))
+      }
     })
     return Array.from(tags).sort()
   }, [initialStories])
@@ -66,8 +70,8 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
           story.shortDescription.toLowerCase().includes(query) ||
           story.valuesTags.some((tag) => tag.toLowerCase().includes(query)) ||
           story.topicTags.some((tag) => tag.toLowerCase().includes(query)) ||
-          story.cultureTags.some((tag) => tag.toLowerCase().includes(query)) ||
-          story.categories.some((sc) => sc.category.name.toLowerCase().includes(query))
+          (story.cultureTags && story.cultureTags.some((tag) => tag.toLowerCase().includes(query))) ||
+          (story.categories && story.categories.some((sc) => sc.category.name.toLowerCase().includes(query)))
         if (!matchesSearch) return false
       }
 
@@ -84,7 +88,7 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
 
       // Category filter
       if (categoryFilter !== "all") {
-        if (!story.categories.some((sc) => sc.category.name === categoryFilter)) return false
+        if (!story.categories || !story.categories.some((sc) => sc.category.name === categoryFilter)) return false
       }
 
       // Tag filter
@@ -92,7 +96,7 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
         const hasTag =
           story.valuesTags.includes(tagFilter) ||
           story.topicTags.includes(tagFilter) ||
-          story.cultureTags.includes(tagFilter)
+          (story.cultureTags && story.cultureTags.includes(tagFilter))
         if (!hasTag) return false
       }
 
@@ -311,7 +315,7 @@ export function StoriesAdminClient({ initialStories }: StoriesAdminClientProps) 
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-foreground/70">
-                      {story.categories.map((sc) => sc.category.name).join(", ") ||
+                      {story.categories?.map((sc) => sc.category.name).join(", ") ||
                         "-"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

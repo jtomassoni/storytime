@@ -16,20 +16,9 @@ export default async function AdminStoriesPage() {
       createdAt: true,
       valuesTags: true,
       topicTags: true,
-      cultureTags: true,
-      representationTags: true,
       estimatedReadTimeMinutes: true,
       boyStoryText: true,
       girlStoryText: true,
-      categories: {
-        select: {
-          category: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
     },
   })
 

@@ -9,75 +9,43 @@ export default async function AdminPage() {
     storyCount,
     activeStoryCount,
     inactiveStoryCount,
-    categoryCount,
     userCount,
     paidUserCount,
     freeUserCount,
     usersWithPreferences,
-    totalReads,
-    totalFavorites,
-    totalObjections,
     recentSignups,
-    recentReads,
-    storiesWithObjections,
-    mostFavoritedStories,
-    mostReadStories,
+    recentStories,
     storyOfTheDayCount,
     upcomingStoryOfTheDay,
+  ]: [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    Array<{ email: string; createdAt: Date; isPaid: boolean }>,
+    Array<{ id: string; title: string; createdAt: Date }>,
+    number,
+    Array<{ id: string; date: Date; story: { title: string } }>,
   ] = await Promise.all([
     prisma.story.count(),
     prisma.story.count({ where: { isActive: true } }),
     prisma.story.count({ where: { isActive: false } }),
-    prisma.category.count(),
     prisma.user.count(),
     prisma.user.count({ where: { isPaid: true } }),
     prisma.user.count({ where: { isPaid: false } }),
     prisma.userPreferences.count(),
-    prisma.storyReadEvent.count(),
-    prisma.favoriteStory.count(),
-    prisma.storyObjection.count(),
     prisma.user.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
       select: { email: true, createdAt: true, isPaid: true },
     }),
-    prisma.storyReadEvent.findMany({
-      orderBy: { startedAt: "desc" },
-      take: 5,
-      include: {
-        story: { select: { title: true } },
-        user: { select: { email: true } },
-      },
-    }),
     prisma.story.findMany({
-      where: {
-        objections: { some: {} },
-      },
-      include: {
-        _count: { select: { objections: true } },
-      },
+      orderBy: { createdAt: "desc" },
       take: 5,
-      orderBy: {
-        objections: { _count: "desc" },
-      },
-    }),
-    prisma.story.findMany({
-      include: {
-        _count: { select: { favorites: true } },
-      },
-      orderBy: {
-        favorites: { _count: "desc" },
-      },
-      take: 5,
-    }),
-    prisma.story.findMany({
-      include: {
-        _count: { select: { readEvents: true } },
-      },
-      orderBy: {
-        readEvents: { _count: "desc" },
-      },
-      take: 5,
+      select: { id: true, title: true, createdAt: true },
     }),
     prisma.storyOfTheDay.count(),
     prisma.storyOfTheDay.findMany({
@@ -91,7 +59,7 @@ export default async function AdminPage() {
       },
     }),
   ]).catch(() => [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], [], [], [], [], 0, [],
+    0, 0, 0, 0, 0, 0, 0, [], [], 0, [],
   ])
 
   const paidPercentage = userCount > 0 ? Math.round((paidUserCount / userCount) * 100) : 0
@@ -109,7 +77,7 @@ export default async function AdminPage() {
       {/* System Health Overview */}
       <div className="bg-card-bg rounded-lg shadow-lg p-6 border border-border-color">
         <h2 className="text-xl font-bold mb-4 text-foreground">System Health</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-background/50 rounded-lg p-4 border border-border-color">
             <h3 className="text-sm font-medium text-foreground/70">Total Users</h3>
             <p className="text-3xl font-bold mt-2 text-foreground">{userCount}</p>
@@ -125,99 +93,55 @@ export default async function AdminPage() {
             </div>
           </div>
           <div className="bg-background/50 rounded-lg p-4 border border-border-color">
-            <h3 className="text-sm font-medium text-foreground/70">Categories</h3>
-            <p className="text-3xl font-bold mt-2 text-foreground">{categoryCount}</p>
-          </div>
-          <div className="bg-background/50 rounded-lg p-4 border border-border-color">
-            <h3 className="text-sm font-medium text-foreground/70">User Engagement</h3>
-            <p className="text-3xl font-bold mt-2 text-foreground">{totalReads}</p>
+            <h3 className="text-sm font-medium text-foreground/70">User Preferences</h3>
+            <p className="text-3xl font-bold mt-2 text-foreground">{usersWithPreferences}</p>
             <div className="mt-2 text-xs text-foreground/60">
-              {totalFavorites} favorites • {totalObjections} objections
+              {userCount > 0 ? Math.round((usersWithPreferences / userCount) * 100) : 0}% completion rate
             </div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Content Performance */}
+        {/* Recent Stories */}
         <div className="bg-card-bg rounded-lg shadow-lg p-6 border border-border-color">
-          <h2 className="text-xl font-bold mb-4 text-foreground">Content Performance</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-sm font-medium text-foreground/80 mb-2">Most Read Stories</h3>
-              <div className="space-y-2">
-                {mostReadStories.length > 0 ? (
-                  mostReadStories.map((story) => (
-                    <div key={story.id} className="flex justify-between items-center text-sm">
-                      <span className="text-foreground/90 truncate">{story.title}</span>
-                      <span className="text-foreground/60 ml-2">{story._count.readEvents} reads</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-foreground/60">No read data yet</p>
-                )}
-              </div>
-            </div>
-            <div className="pt-4 border-t border-border-color">
-              <h3 className="text-sm font-medium text-foreground/80 mb-2">Most Favorited Stories</h3>
-              <div className="space-y-2">
-                {mostFavoritedStories.length > 0 ? (
-                  mostFavoritedStories.map((story) => (
-                    <div key={story.id} className="flex justify-between items-center text-sm">
-                      <span className="text-foreground/90 truncate">{story.title}</span>
-                      <span className="text-foreground/60 ml-2">{story._count.favorites} favorites</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-foreground/60">No favorites yet</p>
-                )}
-              </div>
-            </div>
+          <h2 className="text-xl font-bold mb-4 text-foreground">Recent Stories</h2>
+          <div className="space-y-2">
+            {recentStories.length > 0 ? (
+              recentStories.map((story) => (
+                <div key={story.id} className="flex justify-between items-center text-sm">
+                  <span className="text-foreground/90 truncate">{story.title}</span>
+                  <span className="text-foreground/60 ml-2 text-xs">
+                    {new Date(story.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-foreground/60">No stories yet</p>
+            )}
           </div>
         </div>
 
-        {/* Content Health */}
+        {/* Story of the Day */}
         <div className="bg-card-bg rounded-lg shadow-lg p-6 border border-border-color">
-          <h2 className="text-xl font-bold mb-4 text-foreground">Content Health</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-sm font-medium text-foreground/80 mb-2">Stories with Objections</h3>
-              <div className="space-y-2">
-                {storiesWithObjections.length > 0 ? (
-                  storiesWithObjections.map((story) => (
-                    <Link
-                      key={story.id}
-                      href={`/admin/stories/${story.id}`}
-                      className="flex justify-between items-center text-sm hover:text-accent-purple transition-colors"
-                    >
-                      <span className="text-foreground/90 truncate">{story.title}</span>
-                      <span className="text-red-400 ml-2">{story._count.objections} issues</span>
-                    </Link>
-                  ))
-                ) : (
-                  <p className="text-sm text-foreground/60">No objections reported</p>
-                )}
-              </div>
+          <h2 className="text-xl font-bold mb-4 text-foreground">Story of the Day</h2>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-foreground/70">Total assignments</span>
+              <span className="text-foreground/90 font-semibold">{storyOfTheDayCount}</span>
             </div>
-            <div className="pt-4 border-t border-border-color">
-              <h3 className="text-sm font-medium text-foreground/80 mb-2">Story of the Day Coverage</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-foreground/70">Total assignments</span>
-                  <span className="text-foreground/90 font-semibold">{storyOfTheDayCount}</span>
+            {upcomingStoryOfTheDay.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs text-foreground/60 mb-2">Upcoming (next 7 days):</p>
+                <div className="space-y-1">
+                  {upcomingStoryOfTheDay.map((entry) => (
+                    <div key={entry.id} className="text-xs text-foreground/70">
+                      {new Date(entry.date).toLocaleDateString()}: {entry.story.title}
+                    </div>
+                  ))}
                 </div>
-                {upcomingStoryOfTheDay.length > 0 && (
-                  <div className="mt-2">
-                    <p className="text-xs text-foreground/60 mb-1">Upcoming (next 7 days):</p>
-                    {upcomingStoryOfTheDay.map((entry) => (
-                      <div key={entry.id} className="text-xs text-foreground/70">
-                        {new Date(entry.date).toLocaleDateString()}: {entry.story.title}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -248,26 +172,6 @@ export default async function AdminPage() {
                   ))
                 ) : (
                   <p className="text-sm text-foreground/60">No recent signups</p>
-                )}
-              </div>
-            </div>
-            <div className="pt-4 border-t border-border-color">
-              <h3 className="text-sm font-medium text-foreground/80 mb-2">Recent Reads</h3>
-              <div className="space-y-2">
-                {recentReads.length > 0 ? (
-                  recentReads.map((read) => (
-                    <div key={read.id} className="text-sm">
-                      <span className="text-foreground/90">{read.story.title}</span>
-                      {read.user && (
-                        <span className="text-foreground/60 ml-2">by {read.user.email}</span>
-                      )}
-                      <span className="text-foreground/60 ml-2 text-xs">
-                        {new Date(read.startedAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-foreground/60">No recent reads</p>
                 )}
               </div>
             </div>

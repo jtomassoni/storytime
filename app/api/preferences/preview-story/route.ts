@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     })
 
     // If no stories match, get any active story
-    let story = stories[0]
+    let story: typeof stories[0] | null = stories[0] || null
     if (!story) {
       story = await prisma.story.findFirst({
         where: { isActive: true },

@@ -4,11 +4,26 @@ import { AdUnit } from "@/components/AdUnit"
 import { SubscribeButton } from "@/components/SubscribeButton"
 import Link from "next/link"
 import { formatYearlyPrice } from "@/lib/formatPrice"
+import { prisma } from "@/lib/prisma"
 
 export const dynamic = 'force-dynamic'
 
 export default async function AccountPage() {
-  const user = await requireAuth()
+  const sessionUser = await requireAuth()
+  const user = await prisma.user.findUnique({
+    where: { id: sessionUser.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      isPaid: true,
+      subscriptionEndsAt: true,
+    },
+  })
+
+  if (!user) {
+    return <Layout><div>User not found</div></Layout>
+  }
 
   return (
     <Layout>
@@ -52,7 +67,7 @@ export default async function AccountPage() {
             <div className="pt-6 border-t border-border-color">
               <h2 className="text-xl font-bold mb-2 text-foreground">Subscription Active</h2>
               <p className="text-foreground/70 mb-2">
-                You're all set! Enjoy ad-free daily stories.
+                You&apos;re all set! Enjoy ad-free daily stories.
               </p>
               {user.subscriptionEndsAt && (
                 <p className="text-sm text-foreground/60">

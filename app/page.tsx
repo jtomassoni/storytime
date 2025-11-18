@@ -105,7 +105,7 @@ export default async function Home() {
                 href="/stories"
                 className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-white px-10 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-lg"
               >
-                View Today's Story
+                View Today&apos;s Story
               </Link>
             )}
           </div>
@@ -117,7 +117,7 @@ export default async function Home() {
                 <div className="flex items-center gap-2 mb-4">
                   <FaStar className="text-accent-purple text-xl" />
                   <span className="text-sm font-bold text-accent-purple uppercase tracking-wide">
-                    Today's Story
+                    Today&apos;s Story
                   </span>
                 </div>
                 <h2 className="text-3xl font-bold mb-3 text-foreground">
@@ -174,7 +174,7 @@ export default async function Home() {
                 </div>
                 <h3 className="text-xl font-bold mb-2 text-white">Quick Setup</h3>
                 <p className="text-white/90 text-base leading-relaxed">
-                  Answer 3 simple questions about your child's age and preferences. Takes less than a minute.
+                  Answer 3 simple questions about your child&apos;s age and preferences. Takes less than a minute.
                 </p>
               </div>
               <div className="flex flex-col items-start">
@@ -183,7 +183,7 @@ export default async function Home() {
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-white">Subscribe</h3>
                 <p className="text-white/90 text-lg leading-relaxed">
-                  Just {formatYearlyPrice()} per year - that's less than $2/month for unlimited personalized bedtime stories.
+                  Just {formatYearlyPrice()} per year - that&apos;s less than $2/month for unlimited personalized bedtime stories.
                 </p>
               </div>
               <div className="flex flex-col items-start">
@@ -346,7 +346,7 @@ export default async function Home() {
                   <div>
                     <h3 className="text-xl font-bold mb-2 text-white">Personalized Stories</h3>
                     <p className="text-white/90 text-base leading-relaxed">
-                      Stories tailored to your child's age, gender preference, and the values that matter to your family.
+                      Stories tailored to your child&apos;s age, gender preference, and the values that matter to your family.
                     </p>
                   </div>
                 </div>

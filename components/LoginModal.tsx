@@ -35,7 +35,7 @@ export function LoginModal({ isOpen, onClose, onSwitchToRegister, callbackUrl }:
     setLoading(false)
 
     if (result?.error) {
-      setError("Invalid email or password")
+      setError("Invalid email/username or password")
     } else {
       // Reset form
       setEmail("")
@@ -94,16 +94,16 @@ export function LoginModal({ isOpen, onClose, onSwitchToRegister, callbackUrl }:
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-foreground/80 mb-2">
-              Email address
+              Email or username
             </label>
             <input
               id="email"
               name="email"
-              type="email"
-              autoComplete="email"
+              type="text"
+              autoComplete="username"
               required
               className="w-full px-3 py-3 border border-border-color bg-background placeholder-gray-400 text-foreground rounded-md focus:outline-none focus:ring-accent-purple focus:border-accent-purple sm:text-sm"
-              placeholder="Email address"
+              placeholder="Email or username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

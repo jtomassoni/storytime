@@ -58,10 +58,7 @@ async function main() {
       update: {},
       create: {
         userId: testParent.id,
-        cultureRegion: 'Global',
         preferredValues: ['kindness', 'courage'],
-        avoidTopics: [],
-        languagePrefs: ['en'],
       },
     })
     console.log(`✓ Test parent preferences synced`)

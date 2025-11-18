@@ -303,7 +303,7 @@ export function PreferencesModal({ isOpen, onClose }: PreferencesModalProps) {
                     Continue reading
                   </h3>
                   <p className="text-white/80 text-base">
-                    Choose how you'd like to access the full story
+                    Choose how you&apos;d like to access the full story
                   </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
