@@ -44,117 +44,16 @@ async function getTodaysStory() {
   }
 }
 
-export default async function Home() {
-  const user = await getCurrentUser()
-  const todaysStory = await getTodaysStory()
-  const isMockMode = !process.env.STRIPE_SECRET_KEY || process.env.USE_MOCK_STRIPE === 'true'
-
-  // Check if user needs onboarding
-  if (user) {
-    try {
-      const preferences = await prisma.userPreferences.findUnique({
-        where: { userId: user.id },
-      })
-      if (!preferences) {
-        redirect("/onboarding/preferences")
-      }
-    } catch (error: any) {
-      // Next.js redirect throws an error - this is expected behavior
-      // Only log if it's not a redirect error
-      if (error?.digest?.startsWith('NEXT_REDIRECT')) {
-        // This is a redirect, not an error - rethrow it
-        throw error
-      }
-      console.error("Database error checking preferences:", error)
-    }
+async function getUserSafely() {
+  try {
+    return await getCurrentUser()
+  } catch (error) {
+    console.error("Error getting user:", error)
+    return null
   }
+}
 
-  // If user is authenticated and has preferences, show app dashboard
-  if (user) {
-    return (
-      <Layout>
-        <div className="py-8">
-          {/* Mock Mode Indicator - Only show for non-paid users */}
-          {isMockMode && !user.isPaid && (
-            <div className="max-w-2xl mx-auto mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg text-sm text-center flex items-center justify-center gap-2">
-              <FaFlask className="text-yellow-800" />
-              <strong>Test Mode:</strong> Subscriptions are activated instantly (no payment required)
-            </div>
-          )}
-          
-          {/* Hero Section */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <FaMoon className="text-5xl text-accent-purple" />
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground">
-                Bedtime Stories
-              </h1>
-            </div>
-            <p className="text-xl md:text-2xl text-foreground/80 mb-6 max-w-2xl mx-auto">
-              A new story every day, personalized for your child
-            </p>
-            {!user.isPaid ? (
-              <div className="max-w-md mx-auto">
-                <p className="text-lg text-foreground/70 mb-4">
-                  Subscribe starting at <span className="font-bold text-accent-purple">{formatMonthlyPrice()}/month</span> or <span className="font-bold text-accent-purple">{formatYearlyPrice()}/year</span> to unlock daily stories
-                </p>
-                <SubscribeButton />
-              </div>
-            ) : (
-              <Link
-                href="/stories"
-                className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-white px-10 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-lg"
-              >
-                View Today&apos;s Story
-              </Link>
-            )}
-          </div>
-
-          {/* Today's Story - Only show if user is subscribed */}
-          {user.isPaid && todaysStory && (
-            <div className="max-w-3xl mx-auto mb-12">
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl shadow-xl p-8 border-2 border-amber-200">
-                <div className="flex items-center gap-2 mb-4">
-                  <FaStar className="text-accent-purple text-xl" />
-                  <span className="text-sm font-bold text-accent-purple uppercase tracking-wide">
-                    Today&apos;s Story
-                  </span>
-                </div>
-                <h2 className="text-3xl font-bold mb-3 text-foreground">
-                  {todaysStory.title}
-                </h2>
-                <p className="text-lg text-foreground/80 mb-6">
-                  {todaysStory.shortDescription}
-                </p>
-                <div className="flex flex-wrap gap-3 mb-6">
-                  {todaysStory.minAge && todaysStory.maxAge && (
-                    <span className="bg-amber-100 text-amber-700 px-4 py-2 rounded-full text-sm font-medium">
-                      Ages {todaysStory.minAge}-{todaysStory.maxAge}
-                    </span>
-                  )}
-                  {todaysStory.estimatedReadTimeMinutes && (
-                    <span className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium">
-                      {todaysStory.estimatedReadTimeMinutes} min read
-                    </span>
-                  )}
-                </div>
-                <Link
-                  href={`/stories/${todaysStory.id}`}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
-                >
-                  <FaBookOpen />
-                  Read Now
-                  <FaArrowRight />
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </Layout>
-    )
-  }
-
-  // Marketing landing page for unauthenticated users
+function MarketingLandingPage() {
   return (
     <Layout>
       <div className="min-h-screen">
@@ -396,4 +295,144 @@ export default async function Home() {
       </div>
     </Layout>
   )
+}
+
+export default async function Home() {
+  // Always show marketing site if database/auth fails
+  let user = null
+  let todaysStory = null
+  let databaseAvailable = false
+
+  try {
+    user = await getUserSafely()
+    
+    // Only try database operations if we have a user
+    if (user) {
+      try {
+        const preferences = await prisma.userPreferences.findUnique({
+          where: { userId: user.id },
+        })
+        if (!preferences) {
+          redirect("/onboarding/preferences")
+        }
+        databaseAvailable = true
+      } catch (error: any) {
+        // Next.js redirect throws an error - this is expected behavior
+        if (error?.digest?.startsWith('NEXT_REDIRECT')) {
+          throw error
+        }
+        console.error("Database error checking preferences:", error)
+        // Database unavailable, show marketing site
+        return <MarketingLandingPage />
+      }
+    }
+  } catch (error: any) {
+    // If redirect error, rethrow it
+    if (error?.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error
+    }
+    // Any other error - show marketing site
+    console.error("Error in Home page:", error)
+    return <MarketingLandingPage />
+  }
+
+  // If we have a user and database is available, try to get today's story
+  if (user && databaseAvailable) {
+    try {
+      todaysStory = await getTodaysStory()
+    } catch (error) {
+      console.error("Error getting today's story:", error)
+      // Continue without story
+    }
+  }
+
+  const isMockMode = !process.env.STRIPE_SECRET_KEY || process.env.USE_MOCK_STRIPE === 'true'
+
+  // If user is authenticated and has preferences, show app dashboard
+  if (user && databaseAvailable) {
+    return (
+      <Layout>
+        <div className="py-8">
+          {/* Mock Mode Indicator - Only show for non-paid users */}
+          {isMockMode && !user.isPaid && (
+            <div className="max-w-2xl mx-auto mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg text-sm text-center flex items-center justify-center gap-2">
+              <FaFlask className="text-yellow-800" />
+              <strong>Test Mode:</strong> Subscriptions are activated instantly (no payment required)
+            </div>
+          )}
+          
+          {/* Hero Section */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <FaMoon className="text-5xl text-accent-purple" />
+              <h1 className="text-5xl md:text-6xl font-bold text-foreground">
+                Bedtime Stories
+              </h1>
+            </div>
+            <p className="text-xl md:text-2xl text-foreground/80 mb-6 max-w-2xl mx-auto">
+              A new story every day, personalized for your child
+            </p>
+            {!user.isPaid ? (
+              <div className="max-w-md mx-auto">
+                <p className="text-lg text-foreground/70 mb-4">
+                  Subscribe starting at <span className="font-bold text-accent-purple">{formatMonthlyPrice()}/month</span> or <span className="font-bold text-accent-purple">{formatYearlyPrice()}/year</span> to unlock daily stories
+                </p>
+                <SubscribeButton />
+              </div>
+            ) : (
+              <Link
+                href="/stories"
+                className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-white px-10 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all text-lg"
+              >
+                View Today&apos;s Story
+              </Link>
+            )}
+          </div>
+
+          {/* Today's Story - Only show if user is subscribed */}
+          {user.isPaid && todaysStory && (
+            <div className="max-w-3xl mx-auto mb-12">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl shadow-xl p-8 border-2 border-amber-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <FaStar className="text-accent-purple text-xl" />
+                  <span className="text-sm font-bold text-accent-purple uppercase tracking-wide">
+                    Today&apos;s Story
+                  </span>
+                </div>
+                <h2 className="text-3xl font-bold mb-3 text-foreground">
+                  {todaysStory.title}
+                </h2>
+                <p className="text-lg text-foreground/80 mb-6">
+                  {todaysStory.shortDescription}
+                </p>
+                <div className="flex flex-wrap gap-3 mb-6">
+                  {todaysStory.minAge && todaysStory.maxAge && (
+                    <span className="bg-amber-100 text-amber-700 px-4 py-2 rounded-full text-sm font-medium">
+                      Ages {todaysStory.minAge}-{todaysStory.maxAge}
+                    </span>
+                  )}
+                  {todaysStory.estimatedReadTimeMinutes && (
+                    <span className="bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium">
+                      {todaysStory.estimatedReadTimeMinutes} min read
+                    </span>
+                  )}
+                </div>
+                <Link
+                  href={`/stories/${todaysStory.id}`}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
+                >
+                  <FaBookOpen />
+                  Read Now
+                  <FaArrowRight />
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </Layout>
+    )
+  }
+
+  // Marketing landing page for unauthenticated users or if database fails
+  return <MarketingLandingPage />
 }
