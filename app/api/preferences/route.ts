@@ -2,26 +2,26 @@ import { NextResponse } from "next/server"
 import { requireAuth } from "@/lib/auth-helpers"
 import { prisma } from "@/lib/prisma"
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: Request) {
   try {
     const user = await requireAuth()
-    const { cultureRegion, preferredValues, avoidTopics, languagePrefs } =
+    const { childAge, preferredValues, preferredGender } =
       await request.json()
 
     await prisma.userPreferences.upsert({
       where: { userId: user.id },
       update: {
-        cultureRegion: cultureRegion || null,
+        childAge: childAge || null,
         preferredValues: preferredValues || [],
-        avoidTopics: avoidTopics || [],
-        languagePrefs: languagePrefs || [],
+        preferredGender: preferredGender || null,
       },
       create: {
         userId: user.id,
-        cultureRegion: cultureRegion || null,
+        childAge: childAge || null,
         preferredValues: preferredValues || [],
-        avoidTopics: avoidTopics || [],
-        languagePrefs: languagePrefs || [],
+        preferredGender: preferredGender || null,
       },
     })
 

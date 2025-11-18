@@ -4,19 +4,61 @@ import Link from "next/link"
 import { AdUnit } from "@/components/AdUnit"
 import { getCurrentUser } from "@/lib/auth-helpers"
 
+export const dynamic = 'force-dynamic'
+
+type CategoryWithCount = {
+  id: string
+  name: string
+  description: string | null
+  minAge: number | null
+  maxAge: number | null
+  cultureTags: string[]
+  _count: {
+    stories: number
+  }
+}
+
 export default async function CategoriesPage() {
   const user = await getCurrentUser()
-  const categories = await prisma.category.findMany({
-    orderBy: { name: "asc" },
-  })
+  let categories: CategoryWithCount[] = []
+  
+  try {
+    categories = await prisma.category.findMany({
+      where: {
+        stories: {
+          some: {
+            story: {
+              isActive: true,
+            },
+          },
+        },
+      },
+      orderBy: { name: "asc" },
+      include: {
+        _count: {
+          select: {
+            stories: {
+              where: {
+                story: {
+                  isActive: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    })
+  } catch (error) {
+    console.error("Database error loading categories:", error)
+  }
 
   return (
     <Layout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Categories</h1>
+        <h1 className="text-3xl font-bold text-foreground">Categories</h1>
         {categories.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <p className="text-gray-600">No categories available yet.</p>
+          <div className="bg-card-bg rounded-lg shadow-lg p-8 text-center border border-border-color">
+            <p className="text-foreground/70">No categories available yet.</p>
           </div>
         ) : (
           <>
@@ -25,17 +67,22 @@ export default async function CategoriesPage() {
                 <Link
                   key={category.id}
                   href={`/categories/${category.id}`}
-                  className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow block"
+                  className="bg-card-bg rounded-lg shadow-lg p-6 hover:shadow-xl transition-all border border-border-color hover:border-accent-purple/50 block"
                 >
-                  <h3 className="text-xl font-bold mb-2">{category.name}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">{category.name}</h3>
                   {category.description && (
-                    <p className="text-gray-600 mb-4">{category.description}</p>
+                    <p className="text-foreground/70 mb-4">{category.description}</p>
                   )}
-                  {category.minAge && category.maxAge && (
-                    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-                      Ages {category.minAge}-{category.maxAge}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {category.minAge && category.maxAge && (
+                      <span className="bg-amber-900/50 text-amber-200 px-3 py-1 rounded-full text-sm border border-amber-700/50">
+                        Ages {category.minAge}-{category.maxAge}
+                      </span>
+                    )}
+                    <span className="text-foreground/60 text-sm">
+                      {category._count?.stories || 0} {category._count?.stories === 1 ? 'story' : 'stories'}
                     </span>
-                  )}
+                  </div>
                 </Link>
               ))}
             </div>

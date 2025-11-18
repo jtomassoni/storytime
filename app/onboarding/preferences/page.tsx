@@ -2,224 +2,211 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa"
 
-const CULTURE_REGIONS = [
-  "No preference",
-  "Latin American",
-  "East Asian",
-  "South Asian",
-  "African / Pan-African",
-  "European",
-  "Middle Eastern",
-  "Indigenous",
-  "Other",
-]
+const GENDERS = ["Boy", "Girl", "No preference"]
+const AGES = ["3-4", "5-6", "7-8", "9-10"]
+const VALUES = ["Kindness", "Courage", "Adventure", "Friendship", "Creativity", "Curiosity"]
 
-const VALUES = [
-  "Kindness",
-  "Courage",
-  "Curiosity",
-  "Family",
-  "Friendship",
-  "Environmental Care",
-  "Perseverance",
-  "Honesty",
-  "Empathy",
-  "Creativity",
-]
+interface OnboardingStep {
+  question: string
+  subtitle?: string
+  options: string[]
+  key: string
+}
 
-const TOPICS_TO_AVOID = [
-  "Mild scary moments",
-  "Supernatural themes",
-  "Strong conflict",
-  "Death/loss topics",
-  "None",
-]
-
-const LANGUAGE_PREFS = [
-  "English only",
-  "English with some other-language phrases",
-  "Bilingual where available",
+const STEPS: OnboardingStep[] = [
+  {
+    question: "What's your child's age?",
+    subtitle: "We'll pick age-appropriate stories",
+    options: AGES,
+    key: "age"
+  },
+  {
+    question: "Character preference?",
+    subtitle: "We can personalize stories",
+    options: GENDERS,
+    key: "gender"
+  },
+  {
+    question: "What values matter most?",
+    subtitle: "Pick 1-2 (or skip)",
+    options: VALUES,
+    key: "values"
+  }
 ]
 
 export default function PreferencesPage() {
   const router = useRouter()
-  const [cultureRegion, setCultureRegion] = useState("")
-  const [preferredValues, setPreferredValues] = useState<string[]>([])
-  const [avoidTopics, setAvoidTopics] = useState<string[]>([])
-  const [languagePrefs, setLanguagePrefs] = useState<string[]>([])
+  const [currentStep, setCurrentStep] = useState(0)
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({
+    age: "",
+    gender: "",
+    values: []
+  })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
 
-  const toggleValue = (value: string) => {
-    setPreferredValues((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    )
-  }
+  const currentStepData = STEPS[currentStep]
+  const isMultiSelect = currentStepData.key === "values"
+  const selectedValue = answers[currentStepData.key]
 
-  const toggleAvoidTopic = (topic: string) => {
-    if (topic === "None") {
-      setAvoidTopics([])
-      return
+  const handleSelect = (option: string) => {
+    if (isMultiSelect) {
+      const currentValues = (selectedValue as string[]) || []
+      const newValues = currentValues.includes(option)
+        ? currentValues.filter(v => v !== option)
+        : [...currentValues, option]
+      setAnswers({ ...answers, [currentStepData.key]: newValues })
+    } else {
+      setAnswers({ ...answers, [currentStepData.key]: option })
     }
-    setAvoidTopics((prev) =>
-      prev.includes(topic)
-        ? prev.filter((t) => t !== topic)
-        : [...prev, topic]
-    )
   }
 
-  const toggleLanguagePref = (pref: string) => {
-    setLanguagePrefs((prev) =>
-      prev.includes(pref) ? prev.filter((p) => p !== pref) : [pref]
-    )
+  const canProceed = () => {
+    if (isMultiSelect) {
+      return true // Values are optional
+    }
+    return !!selectedValue
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleNext = () => {
+    if (currentStep < STEPS.length - 1) {
+      setCurrentStep(currentStep + 1)
+    } else {
+      handleSubmit()
+    }
+  }
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const handleSubmit = async () => {
     setLoading(true)
-    setError("")
-
     try {
+      const ageRange = answers.age ? answers.age.split("-") : null
       const res = await fetch("/api/preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cultureRegion: cultureRegion === "No preference" ? null : cultureRegion,
-          preferredValues,
-          avoidTopics: avoidTopics.filter((t) => t !== "None"),
-          languagePrefs,
+          childAge: ageRange ? parseInt(ageRange[0]) : null,
+          preferredGender: answers.gender === "No preference" ? null : (answers.gender as string)?.toLowerCase() || null,
+          preferredValues: answers.values || [],
         }),
       })
 
       if (!res.ok) {
-        const data = await res.json()
-        setError(data.error || "Failed to save preferences")
-        setLoading(false)
-        return
+        throw new Error("Failed to save preferences")
       }
 
       router.push("/")
       router.refresh()
     } catch (err) {
-      setError("Something went wrong. Please try again.")
+      console.error("Error saving preferences:", err)
       setLoading(false)
     }
   }
 
+  const progress = ((currentStep + 1) / STEPS.length) * 100
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6">Tell us about your preferences</h1>
-        <p className="text-gray-600 mb-8">
-          Help us personalize your bedtime story experience.
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Culture/Region focus
-            </label>
-            <select
-              value={cultureRegion}
-              onChange={(e) => setCultureRegion(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-              required
-            >
-              <option value="">Select an option</option>
-              {CULTURE_REGIONS.map((region) => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </select>
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Progress bar */}
+        <div className="mb-4">
+          <div className="h-1 bg-white/30 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            />
           </div>
+          <p className="text-center text-xs text-gray-600 mt-1.5">
+            {currentStep + 1} of {STEPS.length}
+          </p>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Values & themes (select all that apply)
-            </label>
-            <div className="grid grid-cols-2 gap-2">
-              {VALUES.map((value) => (
-                <label
-                  key={value}
-                  className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-purple-50 rounded"
-                >
-                  <input
-                    type="checkbox"
-                    checked={preferredValues.includes(value)}
-                    onChange={() => toggleValue(value)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                  />
-                  <span className="text-sm">{value}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+        {/* Question card */}
+        <div className="bg-white rounded-2xl shadow-2xl p-6 mb-4 flex flex-col">
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              {currentStepData.question}
+            </h1>
+            {currentStepData.subtitle && (
+              <p className="text-gray-600 mb-5 text-sm">
+                {currentStepData.subtitle}
+              </p>
+            )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Topics to avoid (select all that apply)
-            </label>
             <div className="space-y-2">
-              {TOPICS_TO_AVOID.map((topic) => (
-                <label
-                  key={topic}
-                  className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-purple-50 rounded"
-                >
-                  <input
-                    type="checkbox"
-                    checked={avoidTopics.includes(topic)}
-                    onChange={() => toggleAvoidTopic(topic)}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-                  />
-                  <span className="text-sm">{topic}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+              {currentStepData.options.map((option) => {
+                const isSelected = isMultiSelect
+                  ? (selectedValue as string[])?.includes(option)
+                  : selectedValue === option
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Language preferences
-            </label>
-            <div className="space-y-2">
-              {LANGUAGE_PREFS.map((pref) => (
-                <label
-                  key={pref}
-                  className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-purple-50 rounded"
-                >
-                  <input
-                    type="radio"
-                    name="languagePref"
-                    checked={languagePrefs.includes(pref)}
-                    onChange={() => toggleLanguagePref(pref)}
-                    className="border-gray-300 text-purple-600 focus:ring-purple-500"
-                  />
-                  <span className="text-sm">{pref}</span>
-                </label>
-              ))}
+                return (
+                  <button
+                    key={option}
+                    onClick={() => handleSelect(option)}
+                    className={`w-full text-left p-3 rounded-xl border-2 transition-all duration-200 ${
+                      isSelected
+                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-lg transform scale-[1.02]"
+                        : "bg-white text-gray-800 border-gray-200 hover:border-amber-300 hover:shadow-md"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-base font-medium">{option}</span>
+                      {isSelected && (
+                        <div className="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center">
+                          <FaArrowRight className="text-white text-xs" />
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
             </div>
-          </div>
 
-          <div className="flex justify-end space-x-4">
-            <button
-              type="submit"
-              disabled={loading || !cultureRegion || languagePrefs.length === 0}
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Saving..." : "Save Preferences"}
-            </button>
+            {isMultiSelect && (selectedValue as string[])?.length > 0 && (
+              <p className="text-xs text-gray-500 mt-3 text-center">
+                Selected: {(selectedValue as string[]).join(", ")}
+              </p>
+            )}
           </div>
-        </form>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between gap-3">
+          <button
+            onClick={handleBack}
+            disabled={currentStep === 0}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white rounded-xl border-2 border-gray-200 text-gray-700 font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-all text-sm"
+          >
+            <FaArrowLeft />
+            Back
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={!canProceed() || loading}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-[1.02] transition-all text-sm"
+          >
+            {loading ? (
+              "Saving..."
+            ) : currentStep === STEPS.length - 1 ? (
+              <>
+                Get Started
+                <FaArrowRight />
+              </>
+            ) : (
+              <>
+                Next
+                <FaArrowRight />
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   )
 }
-

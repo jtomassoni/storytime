@@ -80,13 +80,13 @@ export default function StoryOfTheDayPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Story of the Day</h1>
+      <h1 className="text-4xl font-bold text-gray-900">Story of the Day</h1>
 
       <form
         onSubmit={handleAssign}
-        className="bg-white rounded-lg shadow-lg p-6 space-y-4"
+        className="bg-white rounded-lg shadow-lg p-6 space-y-6"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Date *
@@ -96,7 +96,7 @@ export default function StoryOfTheDayPage() {
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-purple focus:border-transparent text-gray-900"
             />
           </div>
           <div>
@@ -107,7 +107,7 @@ export default function StoryOfTheDayPage() {
               value={selectedStoryId}
               onChange={(e) => setSelectedStoryId(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-purple focus:border-transparent text-gray-900 appearance-none bg-white"
             >
               <option value="">Select a story</option>
               {stories.map((story) => (
@@ -121,36 +121,44 @@ export default function StoryOfTheDayPage() {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+          className="px-6 py-2 bg-accent-purple text-white rounded-lg hover:bg-accent-purple-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
         >
           {loading ? "Assigning..." : "Assign Story"}
         </button>
       </form>
 
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <h2 className="text-xl font-bold p-6 border-b">Upcoming Assignments</h2>
+        <h2 className="text-lg font-medium text-gray-400 px-6 pt-6 pb-4">Upcoming Assignments</h2>
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Story
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {assignments.map((assignment) => (
-              <tr key={assignment.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  {new Date(assignment.date).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-sm font-medium">
-                  {assignment.story.title}
+            {assignments.length === 0 ? (
+              <tr>
+                <td colSpan={2} className="px-6 py-8 text-center text-sm text-gray-500">
+                  No upcoming assignments
                 </td>
               </tr>
-            ))}
+            ) : (
+              assignments.map((assignment) => (
+                <tr key={assignment.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {new Date(assignment.date).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {assignment.story.title}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,111 +1,89 @@
-# Bedtime Stories App - Development Todo
+# Story Generation TODO
 
 ## Overview
-A mobile-first web app that delivers daily bedtime stories for parents to read to their kids. Stories are created externally using AI and stored/displayed in the app. MVP focuses on content management, user preferences, feedback collection, and ad-based monetization.
+Generate 5-minute and 10-minute versions for all existing stories. This is a one-time content generation task.
 
-## Tech Stack
-- **Framework**: Next.js 14+ (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: PostgreSQL
-- **ORM**: Prisma
-- **Auth**: NextAuth.js
-- **Deployment**: Vercel
-- **Ads**: Google AdSense
+**Important**: Stories need both `boyStoryText` and `girlStoryText` in the JSON files. The generation script will then create 5min/10min versions of each.
 
-## Phases
+## Current Issue
+The existing JSON files only have `storyText` (single version). They need to be updated to include both `boyStoryText` and `girlStoryText` fields before generation can happen.
 
-### Phase 0: Repo Setup & Planning
-- [x] Create todo.md with phases and tasks
-- [x] Initialize Git repo (if not already done)
+See `story-json-format.md` for the expected format.
 
-### Phase 1: Next.js + Tailwind Scaffold
-- [x] Initialize Next.js project with TypeScript
-- [x] Configure Tailwind CSS
-- [x] Set up basic project structure (app/, components/, lib/)
-- [x] Create .gitignore
-- [x] Create .env.example with required variables
-- [x] Set up package.json scripts
+## Current Status
+- **Total Stories**: 91 active stories (found in database)
+- **Versions Needed**: Up to 6 versions per story (5min/10min × default/boy/girl)
+- **Total Versions**: ~546 versions to generate (91 stories × ~6 versions)
+- **Script Status**: ✅ Ready to run (tested with dry-run)
 
-### Phase 2: Prisma Schema & Database Setup
-- [x] Define Prisma schema with all models (User, Story, Category, etc.)
-- [x] Add UserRole enum
-- [x] Add StoryObjectionReason enum
-- [x] Set up PostgreSQL connection
-- [x] Run initial migration (ready - run `npm run db:migrate`)
-- [x] Generate Prisma client (ready - run `npm run db:generate`)
+## Progress Tracking
 
-### Phase 3: Authentication & Seeding
-- [x] Install and configure NextAuth.js
-- [x] Create credentials provider
-- [x] Implement /auth/login and /auth/register pages
-- [x] Create seed script with admin and test parent accounts from env vars
-- [x] Implement password hashing (bcrypt)
-- [x] Test authentication flow
+- [ ] **All Stories** (91 stories total)
+  - Run: `npm run generate:versions`
+  - Or process in chunks if needed
+  - Mark complete when done: `[x]`
 
-### Phase 4: Onboarding Preferences
-- [x] Create /onboarding/preferences page
-- [x] Build culture/region selection form
-- [x] Build values/themes multi-select
-- [x] Build topics to avoid multi-select
-- [x] Build language preferences form
-- [x] Implement UserPreferences persistence
-- [x] Add redirect logic for incomplete preferences
+### Batch Status (Optional - for tracking by JSON file batches)
+- [ ] Batch 101-110 (stories-batch-101-110.json)
+- [ ] Batch 111-120 (stories-batch-111-120.json)
+- [ ] Batch 121-130 (stories-batch-121-130.json)
+- [ ] Batch 131-140 (stories-batch-131-140.json)
+- [ ] Batch 141-150 (stories-batch-141-150.json)
+- [ ] Batch 151-160 (stories-batch-151-160.json)
+- [ ] Batch 161-170 (stories-batch-161-170.json)
+- [ ] Batch 171-180 (stories-batch-171-180.json)
+- [ ] Batch 181-190 (stories-batch-181-190.json)
+- [ ] Batch 191-200 (stories-batch-191-200.json)
+- [ ] Batch 201-210 (stories-batch-201-210.json)
+- [ ] Batch 211-220 (stories-batch-211-220.json)
+- [ ] Batch 221-230 (stories-batch-221-230.json)
+- [ ] Batch 231-240 (stories-batch-231-240.json)
+- [ ] Batch 241-250 (stories-batch-241-250.json)
+- [ ] Batch 251-260 (stories-batch-251-260.json)
 
-### Phase 5: Core User Flows
-- [x] Create home page (/) with "Today's Story" section
-- [x] Implement StoryOfTheDay logic
-- [x] Create /stories page with story listing
-- [x] Create StoryCard component
-- [x] Create /stories/[id] story reader page
-- [x] Implement sentence-level objection UI
-- [x] Create /favorites page
-- [x] Create /categories pages
-- [x] Implement favorite/unfavorite API
-- [x] Implement objection submission API
-- [x] Add read event tracking
+## Generation Strategy
 
-### Phase 6: AdSense Integration
-- [x] Add AdSense script to root layout
-- [x] Create AdUnit client component
-- [x] Implement conditional ad rendering (free vs paid)
-- [x] Add ads to home page
-- [x] Add ads to story reader
-- [x] Add ads to story lists
-- [x] Add ads to account page (for free users)
+### Approach
+1. Process stories in batches of 10 (one JSON file at a time)
+2. For each story:
+   - Generate 5-min version of `fullText` (if exists)
+   - Generate 10-min version of `fullText` (if exists)
+   - Generate 5-min version of `boyStoryText` (if exists)
+   - Generate 10-min version of `boyStoryText` (if exists)
+   - Generate 5-min version of `girlStoryText` (if exists)
+   - Generate 10-min version of `girlStoryText` (if exists)
+3. Update database with generated versions
+4. Mark batch as complete in this file
 
-### Phase 7: Admin Dashboard
-- [x] Create /admin layout with role protection
-- [x] Build /admin overview page
-- [x] Create /admin/stories list page
-- [x] Create /admin/stories/new form
-- [x] Create /admin/stories/[id] edit form
-- [x] Implement JSON paste and parse functionality
-- [x] Create /admin/categories CRUD
-- [x] Create /admin/story-of-the-day management
-- [x] Add admin navigation
+### Cost Optimization
+- Use GPT-4o-mini (cheapest model)
+- Process in batches to avoid rate limits
+- Can pause/resume between batches
 
-### Phase 8: Polish & Documentation
-- [x] Create README.md with setup instructions
-- [x] Add mobile-responsive styling improvements
-- [ ] Test all user flows (manual testing required)
-- [ ] Test admin flows (manual testing required)
-- [ ] Verify ad display logic (manual testing required)
-- [x] Add error handling and loading states
-- [x] Final code review
-- [x] Run npm run build and fix any issues
-- [x] Commit final changes
+## How to Generate Versions
 
-## Key Decisions
-- Stories are created externally; no AI functionality in app
-- Free tier shows ads; paid tier hides ads
-- Admin and test parent accounts seeded from env vars
-- Mobile-first design for tired parents
-- Calm, readable UI with large typography
+### Simple Batch Script (Recommended)
+```bash
+# Generate all versions for all stories
+npm run generate:versions
+
+# Or process specific batches (to avoid rate limits)
+npm run generate:versions -- --batch-start=101 --batch-end=110
+
+# Dry run to see what would be generated
+npm run generate:versions -- --dry-run
+```
+
+The script will:
+- Process all active stories
+- Generate 5min and 10min versions for default/boy/girl (as available)
+- Update the database automatically
+- Show progress and errors
+
+### Alternative: Use Admin UI (One Story at a Time)
+If you prefer to do it manually, go to `/admin/stories/[id]` and click "Generate All Versions"
 
 ## Notes
-- All core features implemented
-- Database migrations need to be run: `npm run db:migrate`
-- Prisma client needs to be generated: `npm run db:generate`
-- Seed script ready: `npm run db:seed`
-- Build ready to test: `npm run build`
+- All infrastructure is ready (API route, helpers, database schema)
+- Requires `OPENAI_API_KEY` in `.env`
+- Can work on this across multiple chat sessions - just check this file for progress

@@ -1,6 +1,9 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
+
+// Global flag to ensure adsbygoogle.push is only called once
+let adsInitialized = false
 
 type AdUnitProps = {
   slot?: string
@@ -13,17 +16,40 @@ export function AdUnit({
   className = "",
   style = {},
 }: AdUnitProps) {
+  const insRef = useRef<HTMLModElement>(null)
+
   useEffect(() => {
+    if (!insRef.current) return
+
+    // Check if the ins element already has ads initialized
+    // AdSense adds this attribute when it initializes an ad
+    if (insRef.current.hasAttribute('data-adsbygoogle-status')) {
+      return
+    }
+
+    // Only initialize once globally to prevent multiple push calls
+    if (adsInitialized) {
+      return
+    }
+
     try {
       // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({})
+      if (window.adsbygoogle) {
+        adsInitialized = true
+        // @ts-ignore
+        window.adsbygoogle.push({})
+      }
     } catch (e) {
-      console.error("AdSense error", e)
+      // Reset flag on error so it can retry
+      adsInitialized = false
+      // Silently handle the error - AdSense will log it if needed
+      // This prevents the error from breaking the page
     }
   }, [])
 
   return (
     <ins
+      ref={insRef}
       className={`adsbygoogle ${className}`}
       style={{ display: "block", ...style }}
       data-ad-client="ca-pub-3373780887120786"

@@ -3,26 +3,47 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Warm, inviting bedtime theme */
+  --background: #1a1625;
+  --foreground: #f5f1e8;
+  --card-bg: #252030;
+  --border-color: #3a3447;
+  --accent-purple: #fbbf24;
+  --accent-purple-dark: #f59e0b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.6);
+    border-radius: 4px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(251, 191, 36, 0.8);
   }
 }
 

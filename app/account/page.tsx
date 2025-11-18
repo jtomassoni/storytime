@@ -1,7 +1,11 @@
 import { Layout } from "@/components/Layout"
 import { requireAuth } from "@/lib/auth-helpers"
 import { AdUnit } from "@/components/AdUnit"
+import { SubscribeButton } from "@/components/SubscribeButton"
 import Link from "next/link"
+import { formatYearlyPrice } from "@/lib/formatPrice"
+
+export const dynamic = 'force-dynamic'
 
 export default async function AccountPage() {
   const user = await requireAuth()
@@ -9,20 +13,20 @@ export default async function AccountPage() {
   return (
     <Layout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Account</h1>
-        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 space-y-6">
+        <h1 className="text-3xl font-bold text-foreground">Account</h1>
+        <div className="bg-card-bg rounded-lg shadow-lg p-6 md:p-8 space-y-6 border border-border-color">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <p className="mt-1 text-lg">{user.email}</p>
+            <label className="block text-sm font-medium text-foreground/80">Email</label>
+            <p className="mt-1 text-lg text-foreground">{user.email}</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Plan</label>
+            <label className="block text-sm font-medium text-foreground/80">Plan</label>
             <p className="mt-1 text-lg">
               {user.isPaid ? (
-                <span className="text-green-600 font-semibold">Paid (No Ads)</span>
+                <span className="text-green-400 font-semibold">Paid (No Ads)</span>
               ) : (
-                <span className="text-gray-600">Free (With Ads)</span>
+                <span className="text-foreground/70">Free (With Ads)</span>
               )}
             </p>
           </div>
@@ -30,24 +34,31 @@ export default async function AccountPage() {
           <div>
             <Link
               href="/onboarding/preferences"
-              className="text-purple-600 hover:text-purple-700 font-medium"
+              className="text-accent-purple hover:text-accent-purple-dark font-medium transition-colors"
             >
               Edit Preferences →
             </Link>
           </div>
 
-          {!user.isPaid && (
-            <div className="pt-6 border-t">
-              <h2 className="text-xl font-bold mb-2">Upgrade to Premium</h2>
-              <p className="text-gray-600 mb-4">
-                Remove ads and enjoy an uninterrupted reading experience.
+          {!user.isPaid ? (
+            <div className="pt-6 border-t border-border-color">
+              <h2 className="text-xl font-bold mb-2 text-foreground">Subscribe for Daily Stories</h2>
+              <p className="text-foreground/70 mb-4">
+                Get a new bedtime story every day, personalized to your child. Starting at {formatYearlyPrice()}/year.
               </p>
-              <button
-                disabled
-                className="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Upgrade (Coming Soon)
-              </button>
+              <SubscribeButton />
+            </div>
+          ) : (
+            <div className="pt-6 border-t border-border-color">
+              <h2 className="text-xl font-bold mb-2 text-foreground">Subscription Active</h2>
+              <p className="text-foreground/70 mb-2">
+                You're all set! Enjoy ad-free daily stories.
+              </p>
+              {user.subscriptionEndsAt && (
+                <p className="text-sm text-foreground/60">
+                  Renews: {new Date(user.subscriptionEndsAt).toLocaleDateString()}
+                </p>
+              )}
             </div>
           )}
 

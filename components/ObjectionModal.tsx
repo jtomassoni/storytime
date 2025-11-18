@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { StoryObjectionReason } from "@prisma/client"
+import { useAlertModal } from "./AlertModal"
 
 type ObjectionModalProps = {
   storyId: string
@@ -24,6 +25,7 @@ export function ObjectionModal({
   textSpan,
   onClose,
 }: ObjectionModalProps) {
+  const { AlertModal, showAlert } = useAlertModal()
   const [reason, setReason] = useState<StoryObjectionReason>("OTHER")
   const [comment, setComment] = useState("")
   const [loading, setLoading] = useState(false)
@@ -55,7 +57,7 @@ export function ObjectionModal({
       }
 
       onClose()
-      alert("Thank you for your feedback!")
+      await showAlert("Thank you for your feedback!")
     } catch (err) {
       setError("Something went wrong. Please try again.")
       setLoading(false)
@@ -63,28 +65,28 @@ export function ObjectionModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-        <h2 className="text-xl font-bold mb-4">Report an issue</h2>
-        <p className="text-gray-600 mb-4 text-sm bg-gray-50 p-3 rounded">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+      <div className="bg-card-bg rounded-lg shadow-xl max-w-md w-full p-6 border border-border-color">
+        <h2 className="text-xl font-bold mb-4 text-foreground">Report an issue</h2>
+        <p className="text-foreground/70 mb-4 text-sm bg-card-bg/50 p-3 rounded border border-border-color">
           &ldquo;{textSpan}&rdquo;
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded text-sm">
+            <div className="bg-red-900/50 border border-red-700/50 text-red-200 px-4 py-2 rounded text-sm">
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/80 mb-2">
               Reason
             </label>
             <select
               value={reason}
               onChange={(e) => setReason(e.target.value as StoryObjectionReason)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              className="w-full px-3 py-2 border border-border-color bg-card-bg text-foreground rounded-md focus:outline-none focus:ring-accent-purple focus:border-accent-purple"
               required
             >
               {REASONS.map((r) => (
@@ -96,14 +98,14 @@ export function ObjectionModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/80 mb-2">
               Additional comments (optional)
             </label>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500"
+              className="w-full px-3 py-2 border border-border-color bg-card-bg text-foreground rounded-md focus:outline-none focus:ring-accent-purple focus:border-accent-purple placeholder-gray-400"
               placeholder="Tell us more about the issue..."
             />
           </div>
@@ -112,20 +114,21 @@ export function ObjectionModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+              className="px-4 py-2 text-foreground/80 bg-card-bg border border-border-color rounded-lg hover:bg-card-bg/80 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
             >
               {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>
       </div>
+      <AlertModal />
     </div>
   )
 }

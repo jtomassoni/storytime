@@ -4,8 +4,8 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Bedtime Stories",
-  description: "Daily bedtime stories for parents to read to their kids",
+  title: "Affordable Bedtime Stories - $3.99/month or $19/year",
+  description: "Personalized bedtime stories delivered daily. Try the yearly plan and save 60%.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Script
           id="google-adsense"

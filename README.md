@@ -15,23 +15,13 @@ A mobile-first web application that delivers daily bedtime stories for parents t
 
 ## Features
 
-### MVP (Phase 1)
+### Core Features
 
-- Story storage and display with structured metadata
-- Admin dashboard for manual story and metadata management
-- User authentication and preferences
-- Onboarding survey for culture, values, and language preferences
-- Favorites system
-- Story objection/feedback system
-- Google AdSense integration (free tier shows ads, paid tier hides ads)
-- Story of the Day feature
-- Category-based browsing
-
-### Future (Phase 2+)
-
-- AI-generated stories driven by history, preferences, and age progression
-- Advanced memberships and personalizations
-- Billing integration for paid tier
+- **Simple Onboarding**: Quick 3-question setup (age, gender preference, values) - one-handed friendly
+- **Daily Stories**: Personalized bedtime stories delivered daily
+- **Subscription Model**: $3.99/month or $19/year (save 60%) for unlimited daily stories
+- **Clean UI**: Modern, elegant, mobile-first design
+- **User Preferences**: Age, gender, and value-based personalization
 
 ## Setup Guide
 
@@ -63,6 +53,16 @@ Edit `.env` and configure:
 - `DATABASE_URL`: Your PostgreSQL connection string
 - `NEXTAUTH_SECRET`: A random secret (generate with `openssl rand -base64 32`)
 - `NEXTAUTH_URL`: Your app URL (e.g., `http://localhost:3000` for local dev)
+- `STRIPE_SECRET_KEY`: Your Stripe secret key (get from https://dashboard.stripe.com/apikeys)
+- `STRIPE_WEBHOOK_SECRET`: Stripe webhook secret (for subscription events)
+- `STRIPE_PRODUCT_ID`: (Optional) Stripe product ID - will be created automatically if not provided
+- `STRIPE_MONTHLY_PLAN_ID`: (Optional) Stripe monthly plan price ID - will be created automatically if not provided
+- `STRIPE_YEARLY_PLAN_ID`: (Optional) Stripe yearly plan price ID - will be created automatically if not provided
+- `STRIPE_FOUNDERS_PLAN_ID`: (Optional) Stripe founders plan price ID - will be created automatically if not provided
+- `NEXT_PUBLIC_MONTHLY_PRICE`: (Optional) Monthly price in USD, defaults to 3.99
+- `NEXT_PUBLIC_YEARLY_PRICE`: (Optional) Yearly price in USD, defaults to 19
+- `NEXT_PUBLIC_FOUNDERS_PLAN_ENABLED`: (Optional) Enable founders plan, set to "true" to enable
+- `NEXT_PUBLIC_FOUNDERS_PRICE`: (Optional) Founders plan price in USD, defaults to 5
 - `ADMIN_EMAIL` and `ADMIN_PASSWORD`: Admin account credentials (will be seeded)
 - `TEST_PARENT_EMAIL`, `TEST_PARENT_PASSWORD`, `TEST_PARENT_IS_PAID`: Test parent account
 
@@ -109,13 +109,12 @@ Use this account to test:
 
 ## Onboarding Flow
 
-After signup, new users are redirected to `/onboarding/preferences` to complete:
-- Culture/Region focus
-- Values & themes preferences
-- Topics to avoid
-- Language preferences
+After signup, new users are redirected to `/onboarding/preferences` for a quick 3-step setup:
+1. **Child's Age**: Select age range (3-4, 5-6, 7-8, 9-10)
+2. **Character Preference**: Boy, Girl, or No preference
+3. **Values**: Select 1-2 values that matter most (optional)
 
-These preferences influence story recommendations and filtering.
+The onboarding is designed to be completed with one hand - perfect for busy parents!
 
 ## Story Metadata Model
 
@@ -169,10 +168,11 @@ The admin dashboard supports pasting this JSON and parsing it to prefill form fi
   - Account page (beneath membership explanation)
 - Anonymous users are treated as free tier
 
-### Paid Tier
+### Paid Tier ($3.99/month or $19/year)
 - No ads displayed
-- Controlled via `User.isPaid` boolean
-- Billing integration is future work
+- Daily personalized stories
+- Controlled via `User.isPaid` boolean and Stripe subscription
+- Subscription managed through Stripe webhooks
 
 ## Admin Dashboard
 

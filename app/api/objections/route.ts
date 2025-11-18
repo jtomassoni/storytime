@@ -3,6 +3,8 @@ import { requireAuth } from "@/lib/auth-helpers"
 import { prisma } from "@/lib/prisma"
 import { StoryObjectionReason } from "@prisma/client"
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: Request) {
   try {
     const user = await requireAuth()

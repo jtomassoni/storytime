@@ -1,0 +1,410 @@
+[
+  {
+    "title": "The Discovery of the Structure of Fossils",
+    "shortDescription": "A story about how scientists discovered what fossils tell us about ancient life.",
+    "longDescription": "Inspired by research on fossils, this bedtime story helps children understand what fossils are and what they tell us. The story emphasizes scientific discovery, understanding ancient life, and how science reveals life from the past.",
+    "storyText": "Little Alex was learning about fossils. 'What are fossils?' he asked his teacher.\n\n'Fossils are remains of ancient life!' his teacher said. 'Scientists discovered that fossils preserve evidence of plants and animals from long ago. Understanding fossil structure helps us understand what life was like in the past!'\n\n'How do fossils form?' Alex asked.\n\n'Fossils form when plants or animals are buried and preserved,' his teacher explained. 'Understanding fossil structure helps us understand how life has changed over time!'\n\n'That's amazing!' Alex said.\n\n'It is,' his teacher said. 'Fossils help us understand how life evolved. Understanding fossil structure helps us understand what life was like millions of years ago!'\n\nAlex thought for a moment. 'So fossils tell us about the past?'\n\n'Yes!' his teacher said. 'Fossils are like windows into the past. Understanding fossil structure helps us understand how life has changed!'\n\nThat night, as Alex lay in bed, he thought about fossils preserving evidence of ancient life.\n\n'Fossils are amazing,' he whispered.\n\nAnd as he drifted off to sleep, he dreamed of fossils preserving evidence of ancient plants and animals.\n\nWhen Alex woke up, he felt amazed by fossils, knowing that science helps us understand life from the past.",
+    "ageRange": {
+      "min": 5,
+      "max": 8
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "paleontology",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "boy"
+      ],
+      "otherCharacterTypes": [
+        "teacher"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Dinosaurs",
+    "shortDescription": "A story about how scientists discovered what dinosaurs were like.",
+    "longDescription": "Inspired by research on dinosaurs, this bedtime story helps children understand what dinosaurs were like. The story emphasizes scientific discovery, understanding dinosaurs, and how science reveals what dinosaurs were like.",
+    "storyText": "Little Maya was learning about dinosaurs. 'What were dinosaurs like?' she asked her mother.\n\n'Dinosaurs were amazing animals!' her mother said. 'Scientists discovered that dinosaurs came in many shapes and sizes. Understanding dinosaur structure helps us understand what dinosaurs were like!'\n\n'How do scientists know what dinosaurs looked like?' Maya asked.\n\n'Scientists study fossils to understand dinosaurs,' her mother explained. 'Understanding dinosaur structure helps us understand how dinosaurs lived!'\n\n'That's amazing!' Maya said.\n\n'It is,' her mother said. 'Dinosaurs help us understand how life has changed. Understanding dinosaur structure helps us understand what dinosaurs were like!'\n\nMaya thought for a moment. 'So scientists study fossils to learn about dinosaurs?'\n\n'Yes!' her mother said. 'Scientists study fossils to understand dinosaurs. Understanding dinosaur structure helps us understand what dinosaurs were like!'\n\nThat night, as Maya lay in bed, she thought about dinosaurs and what they were like.\n\n'Dinosaurs are amazing,' she whispered.\n\nAnd as she drifted off to sleep, she dreamed of dinosaurs, amazing animals from long ago.\n\nWhen Maya woke up, she felt amazed by dinosaurs, knowing that science helps us understand what dinosaurs were like.",
+    "ageRange": {
+      "min": 4,
+      "max": 7
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "paleontology",
+      "bedtime",
+      "discovery",
+      "animals"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "girl"
+      ],
+      "otherCharacterTypes": [
+        "parent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Evolution",
+    "shortDescription": "A story about how scientists discovered how life evolves.",
+    "longDescription": "Inspired by research on evolution, this bedtime story helps children understand how life changes over time. The story emphasizes scientific discovery, understanding evolution, and how science reveals how life evolves.",
+    "storyText": "Little Sam was learning about how life changes. 'How does life change over time?' he asked his father.\n\n'Through evolution!' his father said. 'Scientists discovered that life evolves - changes over time. Understanding evolution helps us understand how life has changed!'\n\n'How does evolution work?' Sam asked.\n\n'Evolution happens when traits that help survival are passed down,' his father explained. 'Understanding evolution helps us understand how life adapts and changes!'\n\n'That's amazing!' Sam said.\n\n'It is,' his father said. 'Evolution helps us understand how life has changed over millions of years. Understanding evolution helps us understand how life works!'\n\nSam thought for a moment. 'So life changes over time?'\n\n'Yes!' his father said. 'Life evolves and changes over time. Understanding evolution helps us understand how life has changed!'\n\nThat night, as Sam lay in bed, he thought about life evolving and changing over time.\n\n'Evolution is amazing,' he whispered.\n\nAnd as he drifted off to sleep, he dreamed of life evolving, changing and adapting over time.\n\nWhen Sam woke up, he felt amazed by evolution, knowing that science helps us understand how life changes.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "boy"
+      ],
+      "otherCharacterTypes": [
+        "parent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of DNA Sequencing",
+    "shortDescription": "A story about how scientists learned to read DNA.",
+    "longDescription": "Inspired by research on DNA sequencing, this bedtime story helps children understand how scientists read DNA. The story emphasizes scientific discovery, understanding genetics, and how science reveals genetic information.",
+    "storyText": "Little Zoe was learning about DNA. 'How do scientists read DNA?' she asked her teacher.\n\n'Through DNA sequencing!' her teacher said. 'Scientists discovered how to read the order of bases in DNA. Understanding DNA sequencing helps us understand genetic information!'\n\n'What does DNA sequencing tell us?' Zoe asked.\n\n'DNA sequencing tells us the order of bases in DNA,' her teacher explained. 'Understanding DNA sequencing helps us understand how genes work!'\n\n'That's amazing!' Zoe said.\n\n'It is,' her teacher said. 'DNA sequencing helps us understand genetics and develop medicines. Understanding DNA sequencing helps us understand how genes work!'\n\nZoe thought for a moment. 'So scientists can read DNA?'\n\n'Yes!' her teacher said. 'Scientists can read DNA through sequencing. Understanding DNA sequencing helps us understand how genes work!'\n\nThat night, as Zoe lay in bed, she thought about scientists reading DNA.\n\n'DNA sequencing is amazing,' she whispered.\n\nAnd as she drifted off to sleep, she dreamed of scientists reading DNA, understanding genetic information.\n\nWhen Zoe woke up, she felt amazed by DNA sequencing, knowing that science helps us understand genetic information.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "genetics",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "girl"
+      ],
+      "otherCharacterTypes": [
+        "teacher"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Genes",
+    "shortDescription": "A story about how scientists discovered what genes are.",
+    "longDescription": "Inspired by research on genes, this bedtime story helps children understand what genes are. The story emphasizes scientific discovery, understanding genetics, and how science reveals how genes work.",
+    "storyText": "Little Max was learning about genes. 'What are genes?' he asked his father.\n\n'Genes are instructions in DNA!' his father said. 'Scientists discovered that genes carry instructions for making proteins. Understanding gene structure helps us understand how genes work!'\n\n'What do genes do?' Max asked.\n\n'Genes carry instructions for traits,' his father explained. 'Understanding gene structure helps us understand how traits are passed down!'\n\n'That's amazing!' Max said.\n\n'It is,' his father said. 'Genes help us understand how traits are inherited. Understanding gene structure helps us understand how genes work!'\n\nMax thought for a moment. 'So genes carry instructions?'\n\n'Yes!' his father said. 'Genes carry instructions for making proteins. Understanding gene structure helps us understand how genes work!'\n\nThat night, as Max lay in bed, he thought about genes carrying instructions.\n\n'Genes are amazing,' he whispered.\n\nAnd as he drifted off to sleep, he dreamed of genes carrying instructions, determining traits.\n\nWhen Max woke up, he felt amazed by genes, knowing that science helps us understand how genes work.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "genetics",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "boy"
+      ],
+      "otherCharacterTypes": [
+        "parent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of RNA",
+    "shortDescription": "A story about how scientists discovered what RNA is.",
+    "longDescription": "Inspired by research on RNA, this bedtime story helps children understand what RNA is. The story emphasizes scientific discovery, understanding RNA, and how science reveals how RNA works.",
+    "storyText": "Little Emma was learning about RNA. 'What is RNA?' she asked her teacher.\n\n'RNA is like DNA's helper!' her teacher said. 'Scientists discovered that RNA helps carry instructions from DNA. Understanding RNA structure helps us understand how RNA works!'\n\n'What does RNA do?' Emma asked.\n\n'RNA helps make proteins,' her teacher explained. 'Understanding RNA structure helps us understand how cells make proteins!'\n\n'That's amazing!' Emma said.\n\n'It is,' her teacher said. 'RNA helps cells make proteins. Understanding RNA structure helps us understand how cells work!'\n\nEmma thought for a moment. 'So RNA helps make proteins?'\n\n'Yes!' her teacher said. 'RNA helps carry instructions for making proteins. Understanding RNA structure helps us understand how RNA works!'\n\nThat night, as Emma lay in bed, she thought about RNA helping make proteins.\n\n'RNA is amazing,' she whispered.\n\nAnd as she drifted off to sleep, she dreamed of RNA helping cells make proteins.\n\nWhen Emma woke up, she felt amazed by RNA, knowing that science helps us understand how RNA works.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "girl"
+      ],
+      "otherCharacterTypes": [
+        "teacher"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Proteins",
+    "shortDescription": "A story about how scientists discovered how proteins fold.",
+    "longDescription": "Inspired by research on protein folding, this bedtime story helps children understand how proteins work. The story emphasizes scientific discovery, understanding proteins, and how science reveals how proteins fold.",
+    "storyText": "Little Sofia was learning about proteins. 'How do proteins work?' she asked her grandmother.\n\n'Proteins fold into special shapes!' her grandmother said. 'Scientists discovered that proteins fold into shapes that determine their function. Understanding protein structure helps us understand how proteins work!'\n\n'Why do proteins fold?' Sofia asked.\n\n'Proteins fold to do their jobs,' her grandmother explained. 'Understanding protein structure helps us understand how proteins work!'\n\n'That's amazing!' Sofia said.\n\n'It is,' her grandmother said. 'Proteins do many jobs in our bodies. Understanding protein structure helps us understand how proteins work!'\n\nSofia thought for a moment. 'So proteins fold to work?'\n\n'Yes!' her grandmother said. 'Proteins fold into shapes that let them do their jobs. Understanding protein structure helps us understand how proteins work!'\n\nThat night, as Sofia lay in bed, she thought about proteins folding into special shapes.\n\n'Proteins are amazing,' she whispered.\n\nAnd as she drifted off to sleep, she dreamed of proteins folding into shapes, doing important jobs.\n\nWhen Sofia woke up, she felt amazed by proteins, knowing that science helps us understand how proteins work.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "girl"
+      ],
+      "otherCharacterTypes": [
+        "grandparent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Enzymes",
+    "shortDescription": "A story about how scientists discovered how enzymes help chemical reactions.",
+    "longDescription": "Inspired by research on enzymes, this bedtime story helps children understand how enzymes work. The story emphasizes scientific discovery, understanding enzymes, and how science reveals how enzymes help chemical reactions.",
+    "storyText": "Little Noah was learning about enzymes. 'What are enzymes?' he asked his father.\n\n'Enzymes are protein helpers!' his father said. 'Scientists discovered that enzymes help chemical reactions happen faster. Understanding enzyme structure helps us understand how enzymes work!'\n\n'How do enzymes work?' Noah asked.\n\n'Enzymes have special shapes that help reactions happen,' his father explained. 'Understanding enzyme structure helps us understand how enzymes work!'\n\n'That's amazing!' Noah said.\n\n'It is,' his father said. 'Enzymes help many reactions in our bodies. Understanding enzyme structure helps us understand how enzymes work!'\n\nNoah thought for a moment. 'So enzymes help reactions?'\n\n'Yes!' his father said. 'Enzymes help chemical reactions happen faster. Understanding enzyme structure helps us understand how enzymes work!'\n\nThat night, as Noah lay in bed, he thought about enzymes helping chemical reactions.\n\n'Enzymes are amazing,' he whispered.\n\nAnd as he drifted off to sleep, he dreamed of enzymes helping chemical reactions, keeping bodies working.\n\nWhen Noah woke up, he felt amazed by enzymes, knowing that science helps us understand how enzymes work.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "chemistry",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "boy"
+      ],
+      "otherCharacterTypes": [
+        "parent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Hormones",
+    "shortDescription": "A story about how scientists discovered what hormones are.",
+    "longDescription": "Inspired by research on hormones, this bedtime story helps children understand what hormones are. The story emphasizes scientific discovery, understanding hormones, and how science reveals how hormones work.",
+    "storyText": "Little Max was learning about hormones. 'What are hormones?' he asked his teacher.\n\n'Hormones are chemical messengers!' his teacher said. 'Scientists discovered that hormones carry messages through our bodies. Understanding hormone structure helps us understand how hormones work!'\n\n'What do hormones do?' Max asked.\n\n'Hormones help control many body functions,' his teacher explained. 'Understanding hormone structure helps us understand how hormones work!'\n\n'That's amazing!' Max said.\n\n'It is,' his teacher said. 'Hormones help control growth, metabolism, and more. Understanding hormone structure helps us understand how hormones work!'\n\nMax thought for a moment. 'So hormones are messengers?'\n\n'Yes!' his teacher said. 'Hormones carry messages through our bodies. Understanding hormone structure helps us understand how hormones work!'\n\nThat night, as Max lay in bed, he thought about hormones carrying messages through bodies.\n\n'Hormones are amazing,' he whispered.\n\nAnd as he drifted off to sleep, he dreamed of hormones carrying messages, controlling body functions.\n\nWhen Max woke up, he felt amazed by hormones, knowing that science helps us understand how hormones work.",
+    "ageRange": {
+      "min": 6,
+      "max": 9
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "medicine",
+      "bedtime",
+      "discovery"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "boy"
+      ],
+      "otherCharacterTypes": [
+        "teacher"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  },
+  {
+    "title": "The Discovery of the Structure of Antibodies",
+    "shortDescription": "A story about how scientists discovered how antibodies fight germs.",
+    "longDescription": "Inspired by research on antibodies, this bedtime story helps children understand how antibodies work. The story emphasizes scientific discovery, understanding immunity, and how science reveals how antibodies fight germs.",
+    "storyText": "Little Maya was learning about how bodies fight germs. 'How do antibodies work?' she asked her mother.\n\n'Antibodies recognize and fight germs!' her mother said. 'Scientists discovered that antibodies have special shapes that recognize germs. Understanding antibody structure helps us understand how antibodies work!'\n\n'How do antibodies fight germs?' Maya asked.\n\n'Antibodies attach to germs and help destroy them,' her mother explained. 'Understanding antibody structure helps us understand how antibodies work!'\n\n'That's amazing!' Maya said.\n\n'It is,' her mother said. 'Antibodies help protect us from diseases. Understanding antibody structure helps us understand how antibodies work!'\n\nMaya thought for a moment. 'So antibodies protect us?'\n\n'Yes!' her mother said. 'Antibodies recognize and fight germs. Understanding antibody structure helps us understand how antibodies work!'\n\nThat night, as Maya lay in bed, she thought about antibodies fighting germs.\n\n'Antibodies are amazing,' she whispered.\n\nAnd as she drifted off to sleep, she dreamed of antibodies recognizing and fighting germs, protecting bodies.\n\nWhen Maya woke up, she felt amazed by antibodies, knowing that science helps us understand how antibodies work.",
+    "ageRange": {
+      "min": 5,
+      "max": 8
+    },
+    "values": [
+      "curiosity",
+      "observation",
+      "wonder",
+      "scientific discovery"
+    ],
+    "topics": [
+      "science",
+      "history",
+      "biology",
+      "medicine",
+      "bedtime",
+      "discovery",
+      "health"
+    ],
+    "cultureRegions": [
+      "Global"
+    ],
+    "languageTags": [
+      "en"
+    ],
+    "contentWarnings": [],
+    "representation": {
+      "primaryChildGenders": [
+        "girl"
+      ],
+      "otherCharacterTypes": [
+        "parent"
+      ],
+      "diversityTags": []
+    },
+    "estimatedReadTimeMinutes": 5
+  }
+]
+

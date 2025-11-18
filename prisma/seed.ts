@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('Starting seed...')
 
-  // Admin account
+  // Admin account - syncs with env vars
   const adminEmail = process.env.ADMIN_EMAIL
   const adminPassword = process.env.ADMIN_PASSWORD
 
@@ -25,12 +25,12 @@ async function main() {
         isPaid: false,
       },
     })
-    console.log(`✓ Admin account created/updated: ${adminEmail}`)
+    console.log(`✓ Admin account synced: ${adminEmail}`)
   } else {
     console.log('⚠ ADMIN_EMAIL or ADMIN_PASSWORD not set, skipping admin account')
   }
 
-  // Test parent account
+  // Test parent account - syncs with env vars
   const testParentEmail = process.env.TEST_PARENT_EMAIL
   const testParentPassword = process.env.TEST_PARENT_PASSWORD
   const testParentIsPaid = process.env.TEST_PARENT_IS_PAID === 'true'
@@ -50,9 +50,9 @@ async function main() {
         isPaid: testParentIsPaid,
       },
     })
-    console.log(`✓ Test parent account created/updated: ${testParentEmail} (isPaid: ${testParentIsPaid})`)
+    console.log(`✓ Test parent account synced: ${testParentEmail} (isPaid: ${testParentIsPaid})`)
 
-    // Create basic preferences for test parent
+    // Ensure preferences exist for test parent
     await prisma.userPreferences.upsert({
       where: { userId: testParent.id },
       update: {},
@@ -64,7 +64,7 @@ async function main() {
         languagePrefs: ['en'],
       },
     })
-    console.log(`✓ Test parent preferences created`)
+    console.log(`✓ Test parent preferences synced`)
   } else {
     console.log('⚠ TEST_PARENT_EMAIL or TEST_PARENT_PASSWORD not set, skipping test parent account')
   }

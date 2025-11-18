@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/auth-helpers"
 import { prisma } from "@/lib/prisma"
+import { assignStoryToAutoCategories } from "@/lib/category-helpers"
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
@@ -28,6 +31,8 @@ export async function POST(request: Request) {
       shortDescription,
       longDescription,
       fullText,
+      boyStoryText,
+      girlStoryText,
       minAge,
       maxAge,
       estimatedReadTimeMinutes,
@@ -47,6 +52,8 @@ export async function POST(request: Request) {
         shortDescription,
         longDescription: longDescription || null,
         fullText,
+        boyStoryText: boyStoryText || null,
+        girlStoryText: girlStoryText || null,
         minAge: minAge || null,
         maxAge: maxAge || null,
         estimatedReadTimeMinutes: estimatedReadTimeMinutes || null,
@@ -64,6 +71,14 @@ export async function POST(request: Request) {
         },
       },
     })
+
+    // Auto-assign story to categories based on tags
+    try {
+      await assignStoryToAutoCategories(story.id)
+    } catch (error) {
+      console.error("Error auto-assigning categories:", error)
+      // Don't fail the request if auto-assignment fails
+    }
 
     return NextResponse.json({ success: true, story })
   } catch (error) {

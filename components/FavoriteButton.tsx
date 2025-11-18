@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { FaHeart, FaRegHeart } from "react-icons/fa"
+import { AuthModal } from "./AuthModal"
 
 type FavoriteButtonProps = {
   storyId: string
@@ -10,9 +11,9 @@ type FavoriteButtonProps = {
 
 export function FavoriteButton({ storyId }: FavoriteButtonProps) {
   const { data: session } = useSession()
-  const router = useRouter()
   const [isFavorited, setIsFavorited] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
     if (session?.user) {
@@ -35,7 +36,7 @@ export function FavoriteButton({ storyId }: FavoriteButtonProps) {
 
   const handleToggle = async () => {
     if (!session?.user) {
-      router.push("/auth/login")
+      setIsAuthModalOpen(true)
       return
     }
 
@@ -58,22 +59,35 @@ export function FavoriteButton({ storyId }: FavoriteButtonProps) {
     }
   }
 
-  if (!session?.user) {
-    return null
-  }
-
   return (
-    <button
-      onClick={handleToggle}
-      disabled={loading}
-      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-        isFavorited
-          ? "bg-red-100 text-red-700 hover:bg-red-200"
-          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-      } disabled:opacity-50`}
-    >
-      {isFavorited ? "❤️ Favorited" : "🤍 Favorite"}
-    </button>
+    <>
+      <button
+        onClick={handleToggle}
+        disabled={loading}
+        className={`px-4 py-2 rounded-lg font-medium transition-colors border flex items-center gap-2 ${
+          isFavorited
+            ? "bg-red-900/50 text-red-200 border-red-700/50 hover:bg-red-900/70"
+            : "bg-card-bg text-foreground/80 border-border-color hover:bg-card-bg/80"
+        } disabled:opacity-50`}
+      >
+        {isFavorited ? (
+          <>
+            <FaHeart className="text-red-400" />
+            Favorited
+          </>
+        ) : (
+          <>
+            <FaRegHeart />
+            Favorite
+          </>
+        )}
+      </button>
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode="login"
+      />
+    </>
   )
 }
 

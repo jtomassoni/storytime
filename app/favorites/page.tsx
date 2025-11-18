@@ -3,6 +3,9 @@ import { requireAuth } from "@/lib/auth-helpers"
 import { prisma } from "@/lib/prisma"
 import { StoryCard } from "@/components/StoryCard"
 import { AdUnit } from "@/components/AdUnit"
+import { FaHeart, FaArrowRight } from "react-icons/fa"
+
+export const dynamic = 'force-dynamic'
 
 export default async function FavoritesPage() {
   const user = await requireAuth()
@@ -18,15 +21,19 @@ export default async function FavoritesPage() {
   return (
     <Layout>
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Your Favorites</h1>
+        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
+          <FaHeart className="text-red-500" />
+          Your Favorites
+        </h1>
         {favorites.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <p className="text-gray-600 mb-4">You haven&apos;t favorited any stories yet.</p>
+          <div className="bg-card-bg rounded-lg shadow-lg p-8 text-center border border-border-color">
+            <p className="text-foreground/70 mb-4">You haven&apos;t favorited any stories yet.</p>
             <a
               href="/stories"
-              className="text-purple-600 hover:text-purple-700 font-medium"
+              className="text-accent-purple hover:text-accent-purple-dark font-medium transition-colors flex items-center gap-2"
             >
-              Browse stories →
+              Browse stories
+              <FaArrowRight />
             </a>
           </div>
         ) : (

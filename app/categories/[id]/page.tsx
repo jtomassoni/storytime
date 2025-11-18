@@ -5,6 +5,8 @@ import { AdUnit } from "@/components/AdUnit"
 import { getCurrentUser } from "@/lib/auth-helpers"
 import { notFound } from "next/navigation"
 
+export const dynamic = 'force-dynamic'
+
 export default async function CategoryPage({
   params,
 }: {
@@ -34,15 +36,15 @@ export default async function CategoryPage({
     <Layout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">{category.name}</h1>
           {category.description && (
-            <p className="text-gray-600 text-lg">{category.description}</p>
+            <p className="text-foreground/80 text-lg">{category.description}</p>
           )}
         </div>
 
         {stories.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-            <p className="text-gray-600">No stories in this category yet.</p>
+          <div className="bg-card-bg rounded-lg shadow-lg p-8 text-center border border-border-color">
+            <p className="text-foreground/70">No stories in this category yet.</p>
           </div>
         ) : (
           <>
