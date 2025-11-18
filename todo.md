@@ -94,7 +94,7 @@ A mobile-first web app that delivers daily bedtime stories for parents to read t
 - [x] Add error handling and loading states
 - [x] Final code review
 - [x] Run npm run build and fix any issues
-- [ ] Commit final changes
+- [x] Commit final changes
 
 ## Key Decisions
 - Stories are created externally; no AI functionality in app
